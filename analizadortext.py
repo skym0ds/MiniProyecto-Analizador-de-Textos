@@ -1,0 +1,132 @@
+import nltk
+from nltk.corpus import wordnet as wn
+from nltk import word_tokenize, pos_tag, ne_chunk, FreqDist
+import tkinter as tk
+from tkinter import filedialog, scrolledtext, messagebox
+
+# ---------------------------
+# Asegúrate de descargar estos recursos la primera vez
+# ---------------------------
+# nltk.download("punkt")
+# nltk.download("averaged_perceptron_tagger")
+# nltk.download("maxent_ne_chunker")
+# nltk.download("words")
+# nltk.download("wordnet")
+
+# ---------------------------
+# Función para analizar texto
+# ---------------------------
+def analizar_texto(texto):
+    resultado = ""
+
+    if not texto.strip():
+        return "⚠️ No se ha ingresado texto."
+
+    # 1. Tokenización
+    tokens = word_tokenize(texto.lower())
+
+    # 2. Limpiar: solo palabras (sin signos ni números)
+    tokens_limpios = [t for t in tokens if t.isalpha()]
+
+    # 3. Número de palabras reales
+    num_palabras = len(tokens_limpios)
+    resultado += f"📌 Número total de palabras: {num_palabras}\n\n"
+
+    # 4. Frecuencia de términos
+    fdist = FreqDist(tokens_limpios)
+    top_terminos = fdist.most_common(5)
+    resultado += "📌 Términos clave más comunes:\n"
+    for palabra, frecuencia in top_terminos:
+        resultado += f"{palabra}: {frecuencia}\n"
+    resultado += "\n"
+
+    # 5. Sinónimos para los términos clave
+    resultado += "📌 Sinónimos de los términos clave:\n"
+    for palabra, _ in top_terminos:
+        synsets = wn.synsets(palabra, lang="spa")
+        sinonimos = set()
+        for syn in synsets:
+            for lemma in syn.lemmas("spa"):
+                sinonimos.add(lemma.name())
+        if sinonimos:
+            resultado += f"- {palabra}: {', '.join(list(sinonimos)[:5])}\n"
+        else:
+            resultado += f"- {palabra}: (no se encontraron sinónimos)\n"
+    resultado += "\n"
+
+    # 6. Reconocimiento de Entidades Nombradas (NER)
+    tokens_origen = word_tokenize(texto)
+    etiquetas = pos_tag(tokens_origen)
+    arbol_entidades = ne_chunk(etiquetas)
+
+    resultado += "📌 Entidades reconocidas en el texto:\n"
+    for subtree in arbol_entidades:
+        if hasattr(subtree, "label"):
+            entidad = " ".join(c[0] for c in subtree.leaves())
+            resultado += f"{subtree.label()}: {entidad}\n"
+
+    return resultado
+
+
+# ---------------------------
+# Función para botón "Analizar"
+# ---------------------------
+def ejecutar_analisis():
+    texto = entrada_texto.get("1.0", tk.END)
+    try:
+        resultado = analizar_texto(texto)
+        salida_texto.delete("1.0", tk.END)
+        salida_texto.insert(tk.END, resultado)
+    except Exception as e:
+        messagebox.showerror("Error en análisis", str(e))
+
+
+# ---------------------------
+# Función para cargar archivo
+# ---------------------------
+def cargar_archivo():
+    archivo = filedialog.askopenfilename(filetypes=[("Archivos de texto", "*.txt")])
+    if archivo:
+        try:
+            with open(archivo, "r", encoding="utf-8") as f:
+                contenido = f.read()
+                entrada_texto.delete("1.0", tk.END)
+                entrada_texto.insert(tk.END, contenido)
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo abrir el archivo: {e}")
+
+
+# ---------------------------
+# Interfaz gráfica (Tkinter)
+# ---------------------------
+ventana = tk.Tk()
+ventana.title("Analizador de Textos con NLTK")
+ventana.geometry("850x650")
+
+# Etiqueta
+tk.Label(ventana, text="Introduce un texto académico o carga un archivo .txt:",
+         font=("Arial", 12)).pack(pady=5)
+
+# Cuadro de texto para entrada
+entrada_texto = scrolledtext.ScrolledText(ventana, wrap=tk.WORD, width=95, height=10)
+entrada_texto.pack(padx=10, pady=10)
+
+# Botones
+frame_botones = tk.Frame(ventana)
+frame_botones.pack()
+
+btn_analizar = tk.Button(frame_botones, text="Analizar", command=ejecutar_analisis, bg="lightgreen")
+btn_analizar.grid(row=0, column=0, padx=5)
+
+btn_cargar = tk.Button(frame_botones, text="Cargar archivo .txt", command=cargar_archivo, bg="lightblue")
+btn_cargar.grid(row=0, column=1, padx=5)
+
+# Cuadro de texto para salida
+tk.Label(ventana, text="Resultados del análisis:",
+         font=("Arial", 12)).pack(pady=5)
+
+salida_texto = scrolledtext.ScrolledText(ventana, wrap=tk.WORD, width=95, height=20, state="normal")
+salida_texto.pack(padx=10, pady=10)
+
+# Ejecutar ventana
+ventana.mainloop()
