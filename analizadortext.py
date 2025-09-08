@@ -4,35 +4,24 @@ from nltk import word_tokenize, pos_tag, ne_chunk, FreqDist
 import tkinter as tk
 from tkinter import filedialog, scrolledtext, messagebox
 
-# ---------------------------
-# Asegúrate de descargar estos recursos la primera vez
-# ---------------------------
-# nltk.download("punkt")
-# nltk.download("averaged_perceptron_tagger")
-# nltk.download("maxent_ne_chunker")
-# nltk.download("words")
-# nltk.download("wordnet")
 
-# ---------------------------
-# Función para analizar texto
-# ---------------------------
 def analizar_texto(texto):
     resultado = ""
 
     if not texto.strip():
         return "⚠️ No se ha ingresado texto."
 
-    # 1. Tokenización
+#Tokenización
     tokens = word_tokenize(texto.lower())
 
-    # 2. Limpiar: solo palabras (sin signos ni números)
+#Limpiar: solo palabras (sin signos ni números)
     tokens_limpios = [t for t in tokens if t.isalpha()]
 
-    # 3. Número de palabras reales
+#Número de palabras reales
     num_palabras = len(tokens_limpios)
     resultado += f"📌 Número total de palabras: {num_palabras}\n\n"
 
-    # 4. Frecuencia de términos
+#Frecuencia de términos
     fdist = FreqDist(tokens_limpios)
     top_terminos = fdist.most_common(5)
     resultado += "📌 Términos clave más comunes:\n"
@@ -40,7 +29,7 @@ def analizar_texto(texto):
         resultado += f"{palabra}: {frecuencia}\n"
     resultado += "\n"
 
-    # 5. Sinónimos para los términos clave
+#Sinónimos para los términos clave
     resultado += "📌 Sinónimos de los términos clave:\n"
     for palabra, _ in top_terminos:
         synsets = wn.synsets(palabra, lang="spa")
@@ -54,7 +43,7 @@ def analizar_texto(texto):
             resultado += f"- {palabra}: (no se encontraron sinónimos)\n"
     resultado += "\n"
 
-    # 6. Reconocimiento de Entidades Nombradas (NER)
+#Reconocimiento de Entidades Nombradas (NER)
     tokens_origen = word_tokenize(texto)
     etiquetas = pos_tag(tokens_origen)
     arbol_entidades = ne_chunk(etiquetas)
@@ -68,9 +57,7 @@ def analizar_texto(texto):
     return resultado
 
 
-# ---------------------------
 # Función para botón "Analizar"
-# ---------------------------
 def ejecutar_analisis():
     texto = entrada_texto.get("1.0", tk.END)
     try:
@@ -81,9 +68,7 @@ def ejecutar_analisis():
         messagebox.showerror("Error en análisis", str(e))
 
 
-# ---------------------------
 # Función para cargar archivo
-# ---------------------------
 def cargar_archivo():
     archivo = filedialog.askopenfilename(filetypes=[("Archivos de texto", "*.txt")])
     if archivo:
@@ -96,22 +81,20 @@ def cargar_archivo():
             messagebox.showerror("Error", f"No se pudo abrir el archivo: {e}")
 
 
-# ---------------------------
-# Interfaz gráfica (Tkinter)
-# ---------------------------
+#Interfaz gráfica (Tkinter)
 ventana = tk.Tk()
-ventana.title("Analizador de Textos con NLTK")
+ventana.title("Analizador de Textos Academicos Equipo 11")
 ventana.geometry("850x650")
 
-# Etiqueta
+#Etiqueta
 tk.Label(ventana, text="Introduce un texto académico o carga un archivo .txt:",
          font=("Arial", 12)).pack(pady=5)
 
-# Cuadro de texto para entrada
+#Cuadro de texto para entrada
 entrada_texto = scrolledtext.ScrolledText(ventana, wrap=tk.WORD, width=95, height=10)
 entrada_texto.pack(padx=10, pady=10)
 
-# Botones
+#Botones
 frame_botones = tk.Frame(ventana)
 frame_botones.pack()
 
@@ -121,12 +104,11 @@ btn_analizar.grid(row=0, column=0, padx=5)
 btn_cargar = tk.Button(frame_botones, text="Cargar archivo .txt", command=cargar_archivo, bg="lightblue")
 btn_cargar.grid(row=0, column=1, padx=5)
 
-# Cuadro de texto para salida
+#Cuadro de texto para salida
 tk.Label(ventana, text="Resultados del análisis:",
          font=("Arial", 12)).pack(pady=5)
 
 salida_texto = scrolledtext.ScrolledText(ventana, wrap=tk.WORD, width=95, height=20, state="normal")
 salida_texto.pack(padx=10, pady=10)
 
-# Ejecutar ventana
 ventana.mainloop()
