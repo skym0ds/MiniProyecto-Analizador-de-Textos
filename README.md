@@ -44,12 +44,6 @@ import nltk; nltk.download()
 ```
 Se abrirá un instalador gráfico en donde puesdes escoger paquetes especificos, sin embargo, en esta ocasión instalaremos todoo, presionaremos "All" y después en download.
 
-Ahora debes estar en la carpeta `MiniProyecto-Analizador-deTextos`. Ejecuta el siguiente comando desde una terminal de visual studio para instalar todas lo necesario para que funcione el proyecto.
-
-```bash
-pip install numpy
-```
-Numpy es necesario para colaborar con NLTK.
 También necesitará tkinter, pero este ya debería venir por defecto con python.
 
 Este último paso es importante; si no se hace tendrás un montón de errores y no podrás hacer nada.
