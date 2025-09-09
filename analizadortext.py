@@ -60,7 +60,7 @@ def analizar_texto(texto):
     return resultado
 
 
-# Función para botón "Analizar"
+#Función para botón "Analizar"
 def ejecutar_analisis():
     texto = entrada_texto.get("1.0", tk.END)
     try:
@@ -71,7 +71,7 @@ def ejecutar_analisis():
         messagebox.showerror("Error en análisis", str(e))
 
 
-# Función para cargar archivo
+#Función para cargar archivo txt
 def cargar_archivo():
     archivo = filedialog.askopenfilename(filetypes=[("Archivos de texto", "*.txt")])
     if archivo:
@@ -82,6 +82,12 @@ def cargar_archivo():
                 entrada_texto.insert(tk.END, contenido)
         except Exception as e:
             messagebox.showerror("Error", f"No se pudo abrir el archivo: {e}")
+
+#Función para limpiar o borrar el texto introducido
+def limpiar_texto():
+    entrada_texto.delete("1.0", tk.END)
+    salida_texto.delete("1.0", tk.END)
+
 
 
 #Interfaz gráfica (Tkinter)
@@ -106,6 +112,9 @@ btn_analizar.grid(row=0, column=0, padx=5)
 
 btn_cargar = tk.Button(frame_botones, text="Cargar archivo .txt", command=cargar_archivo, bg="lightblue")
 btn_cargar.grid(row=0, column=1, padx=5)
+
+btn_limpiar = tk.Button(frame_botones, text="Limpiar", command=limpiar_texto, bg="salmon")
+btn_limpiar.grid(row=0, column=2, padx=5)
 
 #Cuadro de texto para salida
 tk.Label(ventana, text="Resultados del análisis:",
