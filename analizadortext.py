@@ -1,5 +1,5 @@
 import nltk
-from nltk.corpus import wordnet as wn
+from nltk.corpus import wordnet as wn, stopwords
 from nltk import word_tokenize, pos_tag, ne_chunk, FreqDist
 import tkinter as tk
 from tkinter import filedialog, scrolledtext, messagebox
@@ -9,20 +9,23 @@ def analizar_texto(texto):
     resultado = ""
 
     if not texto.strip():
-        return "⚠️ No se ha ingresado texto."
+        return "⚠️ No se ha ingresado texto"
 
 #Tokenización
-    tokens = word_tokenize(texto.lower())
+    tokens = word_tokenize(texto.lower(), language="spanish")
 
-#Limpiar: solo palabras (sin signos ni números)
+#Liempieza, solo se tomarán las palabras (sin signos ni números) y se eliminarán las stopwords (palabras vacías)
     tokens_limpios = [t for t in tokens if t.isalpha()]
 
+    stop_words = set(stopwords.words("spanish"))
+    tokens_filtrados = [t for t in tokens_limpios if t not in stop_words]
+
 #Número de palabras reales
-    num_palabras = len(tokens_limpios)
+    num_palabras = len(tokens_filtrados)  #Se corrigió y se agregó la filtración para contar palabras "reales"
     resultado += f"📌 Número total de palabras: {num_palabras}\n\n"
 
 #Frecuencia de términos
-    fdist = FreqDist(tokens_limpios)
+    fdist = FreqDist(tokens_filtrados)
     top_terminos = fdist.most_common(5)
     resultado += "📌 Términos clave más comunes:\n"
     for palabra, frecuencia in top_terminos:
@@ -44,7 +47,7 @@ def analizar_texto(texto):
     resultado += "\n"
 
 #Reconocimiento de Entidades Nombradas (NER)
-    tokens_origen = word_tokenize(texto)
+    tokens_origen = word_tokenize(texto, language="spanish") #se agregó el idioma a español
     etiquetas = pos_tag(tokens_origen)
     arbol_entidades = ne_chunk(etiquetas)
 
