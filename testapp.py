@@ -18,7 +18,23 @@ casos_prueba = [
         "texto": "El perro corre rápido en el parque.",
         "palabras": ["perro", "corre", "rápido", "parque"],
         "entidades": []
+    },
+    {
+        "texto": "Gabriel García Márquez escribió Cien años de soledad en Colombia.",
+        "palabras": ["gabriel", "garcía", "márquez", "soledad", "colombia"],
+        "entidades": ["Gabriel García Márquez", "Colombia"]
+    },
+    {
+        "texto": "La Organización de las Naciones Unidas fue fundada en 1945.",
+        "palabras": ["organización", "naciones", "unidas", "fundada", "1945"],
+        "entidades": ["Naciones Unidas"]
+    },
+    {
+        "texto": "Python es un lenguaje de programación muy popular en inteligencia artificial.",
+        "palabras": ["python", "lenguaje", "programación", "inteligencia", "artificial"],
+        "entidades": ["Python"]
     }
+
 ]
 
 # ==========================
