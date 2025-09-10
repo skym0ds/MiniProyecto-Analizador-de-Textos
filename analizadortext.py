@@ -1,4 +1,6 @@
-import nltk
+
+#Importación de librerías
+import nltk #Libería principal para el procesamiento del lenguaje natural
 from nltk.corpus import wordnet as wn, stopwords
 from nltk import word_tokenize, pos_tag, ne_chunk, FreqDist
 import tkinter as tk
@@ -12,10 +14,13 @@ def analizar_texto(texto):
         return "⚠️ No se ha ingresado texto"
 
 #Tokenización
+#Se divide el texto en una lista de palabras (tokens) y se convierten a minúsculas.
     tokens = word_tokenize(texto.lower(), language="spanish")
 
 #Liempieza, solo se tomarán las palabras (sin signos ni números) y se eliminarán las stopwords (palabras vacías)
     tokens_limpios = [t for t in tokens if t.isalpha()]
+
+# Se carga el conjunto de "stopwords" (palabras comunes sin valor semántico) en español.
 
     stop_words = set(stopwords.words("spanish"))
     tokens_filtrados = [t for t in tokens_limpios if t not in stop_words]
