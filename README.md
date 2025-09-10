@@ -49,6 +49,16 @@ También necesitará tkinter, pero este ya debería venir por defecto con python
 Este último paso es importante; si no se hace tendrás un montón de errores y no podrás hacer nada.
 
 
+## USO DEL TEST
+Para hacer uso del test basta con instalar primero la librería scikit-learn, para esto escribe el siguiente comando en la terminal estando en la ruta del proyecto
+```bash
+pip install scikit-learn
+```
+Una vez teneindo la librería instalada solo ejecuta el test con el siguiente comando
+```bash
+python testapp.py
+```
+
 ## Ejecución
 
 Para ejecutar el proyecto bastaría con poner el siguiente comando en la consola desde visual studio:
