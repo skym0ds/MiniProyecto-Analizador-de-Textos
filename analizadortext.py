@@ -40,22 +40,21 @@ def analizar_texto(texto):
 #Sinónimos para los términos clave
     resultado += "📌 Sinónimos de los términos clave:\n"
     for palabra, _ in top_terminos:
-        synsets = wn.synsets(palabra, lang="spa")
-        sinonimos = set()
+        synsets = wn.synsets(palabra, lang="spa") #Se busca la palabra en wordnet
+        sinonimos = set() #Evitamos sinónimos duplicados
         for syn in synsets:
             for lemma in syn.lemmas("spa"):
                 sinonimos.add(lemma.name())
         if sinonimos:
-            resultado += f"- {palabra}: {', '.join(list(sinonimos)[:5])}\n"
+            resultado += f"- {palabra}: {', '.join(list(sinonimos)[:5])}\n" #Se proporcionan los primeros 5 resultados
         else:
             resultado += f"- {palabra}: (no se encontraron sinónimos)\n"
     resultado += "\n"
 
 #Reconocimiento de Entidades Nombradas (NER)
     tokens_origen = word_tokenize(texto, language="spanish") #se agregó el idioma a español
-    etiquetas = pos_tag(tokens_origen)
-    arbol_entidades = ne_chunk(etiquetas)
-
+    etiquetas = pos_tag(tokens_origen)     # Primero, se etiqueta cada palabra con su categoría gramatical (nombre, verbo, adjetivo, etc.)
+    arbol_entidades = ne_chunk(etiquetas) #agrupa las palabras con su categoría gramatical
     resultado += "📌 Entidades reconocidas en el texto:\n"
     for subtree in arbol_entidades:
         if hasattr(subtree, "label"):
