@@ -95,36 +95,37 @@ def limpiar_texto():
 
 
 #Interfaz gráfica (Tkinter)
-ventana = tk.Tk()
-ventana.title("Analizador de Textos Academicos Equipo 11")
-ventana.geometry("850x650")
+if __name__ == "__main__":
+    ventana = tk.Tk()
+    ventana.title("Analizador de Textos Academicos Equipo 11")
+    ventana.geometry("850x650")
 
 #Etiqueta
-tk.Label(ventana, text="Introduce un texto académico o carga un archivo .txt:",
-         font=("Arial", 12)).pack(pady=5)
+    tk.Label(ventana, text="Introduce un texto académico o carga un archivo .txt:",
+            font=("Arial", 12)).pack(pady=5)
 
 #Cuadro de texto para entrada
-entrada_texto = scrolledtext.ScrolledText(ventana, wrap=tk.WORD, width=95, height=10)
-entrada_texto.pack(padx=10, pady=10)
+    entrada_texto = scrolledtext.ScrolledText(ventana, wrap=tk.WORD, width=95, height=10)
+    entrada_texto.pack(padx=10, pady=10)
 
 #Botones
-frame_botones = tk.Frame(ventana)
-frame_botones.pack()
+    frame_botones = tk.Frame(ventana)
+    frame_botones.pack()
 
-btn_analizar = tk.Button(frame_botones, text="Analizar", command=ejecutar_analisis, bg="lightgreen")
-btn_analizar.grid(row=0, column=0, padx=5)
+    btn_analizar = tk.Button(frame_botones, text="Analizar", command=ejecutar_analisis, bg="lightgreen")
+    btn_analizar.grid(row=0, column=0, padx=5)
 
-btn_cargar = tk.Button(frame_botones, text="Cargar archivo .txt", command=cargar_archivo, bg="lightblue")
-btn_cargar.grid(row=0, column=1, padx=5)
+    btn_cargar = tk.Button(frame_botones, text="Cargar archivo .txt", command=cargar_archivo, bg="lightblue")
+    btn_cargar.grid(row=0, column=1, padx=5)
 
-btn_limpiar = tk.Button(frame_botones, text="Limpiar", command=limpiar_texto, bg="salmon")
-btn_limpiar.grid(row=0, column=2, padx=5)
+    btn_limpiar = tk.Button(frame_botones, text="Limpiar", command=limpiar_texto, bg="salmon")
+    btn_limpiar.grid(row=0, column=2, padx=5)
 
 #Cuadro de texto para salida
-tk.Label(ventana, text="Resultados del análisis:",
-         font=("Arial", 12)).pack(pady=5)
+    tk.Label(ventana, text="Resultados del análisis:",
+            font=("Arial", 12)).pack(pady=5)
 
-salida_texto = scrolledtext.ScrolledText(ventana, wrap=tk.WORD, width=95, height=20, state="normal")
-salida_texto.pack(padx=10, pady=10)
+    salida_texto = scrolledtext.ScrolledText(ventana, wrap=tk.WORD, width=95, height=20, state="normal")
+    salida_texto.pack(padx=10, pady=10)
 
-ventana.mainloop()
+    ventana.mainloop()
